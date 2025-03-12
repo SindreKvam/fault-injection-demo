@@ -1,0 +1,8 @@
+# IDE
+.DS_Store
+
+# Virtual environment
+venv
+env
+.venv
+.env
