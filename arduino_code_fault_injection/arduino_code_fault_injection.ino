@@ -1,29 +1,36 @@
-int main() {
+#define LOCK_STATE_PIN 12
+#define BUILT_IN_LED_PIN 13
 
-  // Serial1 to use UART on RX and TX pins instead of USB interface.
-  Serial1.begin(115200);
+volatile int a = 1, b = 1, c = 1, d = 1;
 
-  Serial1.println("");
-  Serial1.println("Setup complete");
+void setup() {
 
-  bool locked = true;
-  int a = 1;
-  int b = 1;
-  int c = 1;
-  int d = 1;
-  do {
+  pinMode(LOCK_STATE_PIN, OUTPUT);
+  pinMode(BUILT_IN_LED_PIN, OUTPUT);
 
-    for (int i = 1; i < 1000; i++) { a = (a + i); }
-    for (int j = 1; j < 1000; j++) { b = (b + j); }
-    for (int k = 1; k < 1000; k++) { c = (c + k); }
-    for (int l = 1; l < 1000; l++) { d = (d + l); }
+  // Set locked pin high
+  digitalWrite(LOCK_STATE_PIN, HIGH);
+  digitalWrite(BUILT_IN_LED_PIN, HIGH);
+
+  while(a == b && b == c && c == d) {
+
     // Do calculations where every variable should be the same at every check
+    for(int i = 1; i < 1000; i++){a = (a + i);}
+    for(int j = 1; j < 1000; j++){b = (b + j);}
+    for(int k = 1; k < 1000; k++){c = (c + k);}
+    for(int l = 1; l < 1000; l++){d = (d + l);}
 
-    Serial1.print("Locked");
+  }
 
-  } while (a == b && b == c && c == d);
+  digitalWrite(LOCK_STATE_PIN, LOW);
 
-  // Unreachable
-  Serial1.println("");
-  Serial1.println("Device is unlocked!");
+}
+
+void loop(){
+  // Indicate that the device is unlocked by alternating the LED.
+  delay(500);
+  digitalWrite(BUILT_IN_LED_PIN, LOW);
+  delay(500);
+  digitalWrite(BUILT_IN_LED_PIN, HIGH);
+  
 }
