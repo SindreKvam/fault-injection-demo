@@ -28,9 +28,8 @@ void setup() {
 
 void loop(){
   // Indicate that the device is unlocked by alternating the LED.
-  delay(500);
   digitalWrite(BUILT_IN_LED_PIN, LOW);
   delay(500);
   digitalWrite(BUILT_IN_LED_PIN, HIGH);
-  
+  delay(500);
 }
