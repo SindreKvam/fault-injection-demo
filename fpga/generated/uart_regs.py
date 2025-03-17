@@ -1,6 +1,6 @@
 # UART register accessor by VHDLwhiz
 # Generated with the command:
-# python .\uart_regs-1.0.4\gen_uart_regs.py glitch_delay=32:out:std_logic_vector
+# python .\uart_regs-1.0.4\gen_uart_regs.py glitch_delay=32:out:std_logic_vector start_glitch=1:out:std_logic
 
 import math
 import argparse
@@ -11,6 +11,7 @@ from serial.tools.list_ports import comports
 # (Name, Mode, Bit Length, Data Type)
 registers = [
     ('glitch_delay', 'out', 32, 'std_logic_vector'),
+    ('start_glitch', 'out', 1, 'std_logic'),
 ]
 
 # Default UART configuration
