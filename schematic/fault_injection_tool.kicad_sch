@@ -2845,6 +2845,36 @@
 	)
 	(wire
 		(pts
+			(xy 195.58 53.34) (xy 198.12 53.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3cc03bcb-5456-4631-99fd-218f89b56be4")
+	)
+	(wire
+		(pts
+			(xy 41.91 76.2) (xy 44.45 76.2)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "43769b10-4d39-4014-8418-7cdc8d30b87f")
+	)
+	(wire
+		(pts
+			(xy 195.58 48.26) (xy 198.12 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "49d66092-fb1c-48ef-bda1-e85c2e195f02")
+	)
+	(wire
+		(pts
 			(xy 195.58 38.1) (xy 198.12 38.1)
 		)
 		(stroke
@@ -2995,6 +3025,16 @@
 	)
 	(wire
 		(pts
+			(xy 195.58 50.8) (xy 198.12 50.8)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9dd5e77c-d4c4-4767-a5ab-7a5627c9ad26")
+	)
+	(wire
+		(pts
 			(xy 90.17 132.08) (xy 90.17 144.78)
 		)
 		(stroke
@@ -3105,6 +3145,16 @@
 	)
 	(wire
 		(pts
+			(xy 195.58 55.88) (xy 198.12 55.88)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "de769eb1-26e7-46e4-9c30-4c7b4f575fdf")
+	)
+	(wire
+		(pts
 			(xy 41.91 78.74) (xy 44.45 78.74)
 		)
 		(stroke
@@ -3112,6 +3162,16 @@
 			(type default)
 		)
 		(uuid "ede6734d-6aef-497d-9dd0-a5cfbef68598")
+	)
+	(wire
+		(pts
+			(xy 195.58 45.72) (xy 198.12 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f3a483b5-7de6-45c4-9605-fe97dfa3aa0d")
 	)
 	(wire
 		(pts
@@ -3144,6 +3204,16 @@
 		)
 		(uuid "0c026b2f-0733-4777-9169-6f52616c1f6a")
 	)
+	(label "uart_rx"
+		(at 198.12 53.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0f4a27ee-c23e-4f67-a0f4-81622da31569")
+	)
 	(label "arduino_gnd"
 		(at 198.12 43.18 0)
 		(effects
@@ -3153,6 +3223,16 @@
 			(justify left bottom)
 		)
 		(uuid "17120b45-ad02-4633-88a4-8d887f5e28ab")
+	)
+	(label "uart_tx"
+		(at 198.12 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ade19af-41f1-4dc0-a355-147a243a0d75")
 	)
 	(label "arduino_gnd"
 		(at 93.98 119.38 0)
@@ -3174,7 +3254,37 @@
 		)
 		(uuid "3a2c842b-5068-4f62-814b-7c0fa141e4c4")
 	)
-	(label "CTRL"
+	(label "borf"
+		(at 198.12 45.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "46ea069a-b8f5-4451-a6b3-f84b429e1e35")
+	)
+	(label "lock_state"
+		(at 198.12 48.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5221549e-be98-4fc4-bd43-6b544b1ffb2b")
+	)
+	(label "borf"
+		(at 41.91 76.2 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "595eba91-9b8f-4999-a8c8-5e1d39daf2ea")
+	)
+	(label "ctrl"
 		(at 57.15 127 0)
 		(effects
 			(font
@@ -3194,7 +3304,17 @@
 		)
 		(uuid "809bcbd6-c029-49bf-8b1a-a63d9f3a23db")
 	)
-	(label "CTRL"
+	(label "ctrl"
+		(at 198.12 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "8b0c3ecb-8dc8-4b85-9c86-30ec5b2ea129")
+	)
+	(label "ctrl"
 		(at 118.11 45.72 180)
 		(effects
 			(font
@@ -4296,7 +4416,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical"
 			(at 190.5 48.26 0)
 			(effects
 				(font
