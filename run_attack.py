@@ -6,6 +6,7 @@ import threading
 import time
 import os
 import sys
+from datetime import datetime
 from enum import IntEnum
 
 import numpy as np
@@ -27,9 +28,9 @@ BUFFER_SIZE = 8192
 class GlitchResult(IntEnum):
     """Enumeration of the glitch types."""
 
-    UNLOCKED = 0
-    LOCKED = 1
-    RESET = 2
+    RESET = 0
+    UNLOCKED = 1
+    LOCKED = 2
     UNKNOWN = 3
 
 
@@ -93,6 +94,19 @@ def safely_set_supply_voltage(supply, *, voltage: float = 4.0):
     time.sleep(0.5)
 
 
+def get_lock_state(logic_analyzer: DigitalInput) -> int:
+    """Get the lock state of the device."""
+    _lock_state = logic_analyzer.single(
+        sample_rate=SAMPLE_RATE,
+        sample_format=16,
+        buffer_size=1024,
+        configure=True,
+        start=True,
+    )
+    _lock_state_value = int(np.mean(_lock_state))
+    return _lock_state_value
+
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Run the timing attack.")
@@ -134,7 +148,10 @@ if __name__ == "__main__":
         default=4.0,
     )
     parser.add_argument(
-        "--output", type=str, help="Output folder.", default="output_data"
+        "--output",
+        type=str,
+        help="Output folder.",
+        default=f"output_data_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}",
     )
     args = parser.parse_args()
     print(args)
@@ -188,15 +205,20 @@ if __name__ == "__main__":
         # Configure the Analog Discovery 2 oscilloscope trigger.
         ad2_scope.setup_edge_trigger(mode="normal", channel=1, slope="falling", level=1.5)
 
-        for volt_index, voltage in enumerate(voltage_levels):
+        for volt_index, voltage_level in enumerate(voltage_levels):
             for glitch_index, glitch_length in enumerate(glitch_lengths):
 
                 logger.info(
-                    "Glitch voltage: %.2f. Glitch samples %d", voltage, glitch_length
+                    "Glitch voltage: %.2f. Glitch samples %d",
+                    voltage_level,
+                    glitch_length,
                 )
 
                 # Setup the Analog Discovery 2 power supply.
-                safely_set_supply_voltage(ad2_supply, voltage=voltage)
+                safely_set_supply_voltage(ad2_supply, voltage=voltage_level)
+
+                # Make sure that the device is locked
+                lock_state_pre_attack = get_lock_state(ad2_logic_analyzer)
 
                 # Prime the FPGA glitch signal
                 uart_regs.write_regs({"start_glitch": 0, "glitch_delay": glitch_length})
@@ -224,31 +246,35 @@ if __name__ == "__main__":
                 )
 
                 # Get the lock state
-                lock_state = ad2_logic_analyzer.single(
-                    sample_rate=SAMPLE_RATE,
-                    sample_format=16,
-                    buffer_size=1024,
-                    configure=True,
-                    start=True,
-                )
-                lock_state_value = int(np.mean(lock_state))
+                lock_state_value = get_lock_state(ad2_logic_analyzer)
+
+                time.sleep(0.5)
+
+                # Get the lock state
+                lock_state_value_delayed = get_lock_state(ad2_logic_analyzer)
+                print(lock_state_pre_attack, lock_state_value, lock_state_value_delayed)
 
                 # Save the oscilloscope samples to file
                 np.savez(
                     os.path.join(
                         args.output,
-                        f"scope_samples_{voltage:.2f}V_{glitch_length}.npz",
+                        f"scope_samples_{voltage_level:.2f}V_{glitch_length}.npz",
                     ),
                     arduino_5v_rail=oscilloscope_samples[0],
                     nmos_gate=oscilloscope_samples[1],
                     lock_state=lock_state_value,
+                    lock_state_delayed=lock_state_value_delayed,
                 )
 
-                # TODO: Get a way to find if the device reset.
-                if lock_state_value == 0:
+                # Lock state is 0 if the device is unlocked.
+                # If lock state goes from 0 to 1, we have achieved a reset.
+                if lock_state_value == 0 and lock_state_value_delayed == 1:
+                    logger.info("Attack result; reset device")
+                    schmoo[volt_index, glitch_index] = GlitchResult.RESET
+                elif lock_state_value == 0 and lock_state_value_delayed == 0:
                     logger.info("Attack unlocked device")
                     schmoo[volt_index, glitch_index] = GlitchResult.UNLOCKED
-                elif lock_state_value == 1:
+                elif lock_state_value == 1 and lock_state_value_delayed == 1:
                     logger.info("Attack locked device")
                     schmoo[volt_index, glitch_index] = GlitchResult.LOCKED
                 else:
@@ -256,9 +282,6 @@ if __name__ == "__main__":
                     schmoo[volt_index, glitch_index] = GlitchResult.UNKNOWN
 
         print(f"Lock state: {lock_state_value}")
-
-        # voltage_before_attack = np.mean(oscilloscope_samples[0][:1000])
-        # voltage_after_attack = np.mean(oscilloscope_samples[0][-1000:])
 
         np.savez(
             os.path.join(
