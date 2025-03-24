@@ -1,5 +1,7 @@
 # IDE
 .DS_Store
+.vscode
+.idea
 
 # Virtual environment
 venv
@@ -9,3 +11,14 @@ env
 
 # Python
 __pycache__
+
+
+# Output from simulations
+sim/**/*.txt
+*.png
+
+# Output data
+*.npz
+
+# Export
+*.zip
