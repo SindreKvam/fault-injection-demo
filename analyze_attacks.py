@@ -94,11 +94,12 @@ if __name__ == "__main__":
         locked_state = file_content["lock_state_delayed"]
         print(locked_state)
 
-        plt.plot(t * 1e6, file_content["arduino_5v_rail"], label="Arduino 5V rail")
         plt.plot(t * 1e6, file_content["nmos_gate"], label="NMOS gate")
+        plt.plot(t * 1e6, file_content["arduino_5v_rail"], label="Arduino 5V rail")
+        plt.axhline(1.8, color="red", linestyle="--", label="Arduino brownout", alpha=0.5)
         plt.xlabel(r"Time ($\mu$s)")
         plt.ylabel("Voltage (V)")
-        plt.xlim(-2, 8)
+        plt.xlim(-1, 4)
         plt.title("Arduino 5V rail and NMOS gate")
         plt.suptitle(f"Device state: {'locked' if locked_state else 'unlocked'}")
         plt.grid()
