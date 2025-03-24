@@ -2691,9 +2691,9 @@
 		)
 		(uuid "85b3726d-ff58-44bf-9de4-0669b9f3f5cf")
 	)
-	(text "Power drop"
+	(text "Low-side switch"
 		(exclude_from_sim no)
-		(at 31.75 116.84 0)
+		(at 34.29 116.84 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2701,9 +2701,9 @@
 		)
 		(uuid "ab388d3e-d32d-44af-b901-fc22aeb2913b")
 	)
-	(text "Power"
+	(text "Power header"
 		(exclude_from_sim no)
-		(at 130.81 116.84 0)
+		(at 134.62 116.84 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2852,16 +2852,6 @@
 			(type default)
 		)
 		(uuid "3cc03bcb-5456-4631-99fd-218f89b56be4")
-	)
-	(wire
-		(pts
-			(xy 41.91 76.2) (xy 44.45 76.2)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "43769b10-4d39-4014-8418-7cdc8d30b87f")
 	)
 	(wire
 		(pts
@@ -3165,16 +3155,6 @@
 	)
 	(wire
 		(pts
-			(xy 195.58 45.72) (xy 198.12 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f3a483b5-7de6-45c4-9605-fe97dfa3aa0d")
-	)
-	(wire
-		(pts
 			(xy 72.39 127) (xy 77.47 127)
 		)
 		(stroke
@@ -3254,16 +3234,6 @@
 		)
 		(uuid "3a2c842b-5068-4f62-814b-7c0fa141e4c4")
 	)
-	(label "borf"
-		(at 198.12 45.72 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "46ea069a-b8f5-4451-a6b3-f84b429e1e35")
-	)
 	(label "lock_state"
 		(at 198.12 48.26 0)
 		(effects
@@ -3273,16 +3243,6 @@
 			(justify left bottom)
 		)
 		(uuid "5221549e-be98-4fc4-bd43-6b544b1ffb2b")
-	)
-	(label "borf"
-		(at 41.91 76.2 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "595eba91-9b8f-4999-a8c8-5e1d39daf2ea")
 	)
 	(label "ctrl"
 		(at 57.15 127 0)
