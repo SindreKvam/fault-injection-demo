@@ -31,7 +31,11 @@ architecture rtl of top_level is
     signal uart_tx    : std_logic                    := '0';
 
     -- UART accessible registers
-    signal glitch_delay : std_logic_vector(31 downto 0);
+    signal glitch_delay : std_logic_vector(31 downto 0) := (others => '0');
+    signal start_glitch : std_logic                     := '0';
+
+    -- Previous start glitch to check for rising edge of signal
+    signal p_start_glitch : std_logic := '0';
 
     --------------------------------------------------
     -- Create state machine
@@ -70,7 +74,8 @@ begin
         rst => not KEY(1),
         uart_rx => uart_rx,
         uart_tx => uart_tx,
-        glitch_delay => glitch_delay
+        glitch_delay => glitch_delay,
+        start_glitch => start_glitch
     );
 
     --------------------------------------------------
@@ -90,6 +95,8 @@ begin
             v_led_reg       := (others => '0');
             v_counter_reg   := (others => '0');
             v_glitch_sig    := '1';
+
+            p_start_glitch <= start_glitch;
             
             --------------------------------------------------
             -- State machine
@@ -100,7 +107,8 @@ begin
                     --------------------------------------------------
                     v_led_reg(1 downto 0) := "11";
 
-                    if (KEY(0) = '0') then
+                    -- Check for rising edge on start_glitch signal
+                    if ((p_start_glitch = '0' and start_glitch = '1') or KEY(0) = '0') then
                         state <= GLITCH;
                     end if;
 
